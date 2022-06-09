@@ -1,0 +1,5 @@
+venv
+hexs
+__pycache__
+.DS_Store
+.vscode

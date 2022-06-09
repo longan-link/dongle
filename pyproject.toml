@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "dongle"
+version = "0.1.0"
+description = ""
+authors = ["xavierchan <xavierchan@163.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fake-rpigpio = "0.1.1"
+intelhex = "2.3.0"
+"Jetson.GPIO" = "2.0.18"
+loguru = "0.5.3"
+pyserial = "3.5"
+python-magic = "0.4.25"
+click = "7.1.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+dongle = "dongle.cli:run"
