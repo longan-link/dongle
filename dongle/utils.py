@@ -50,7 +50,7 @@ def get_dev():
     return dev
 
 
-def boot(firmware=None):
+def boot(firmware=None, exit_=False):
     """
     dongle startup.
     bslpin - 1. LOW: download mode; 2. HIGH: run mode;
@@ -74,7 +74,7 @@ def boot(firmware=None):
                 GPIO.output(rstpin, GPIO.HIGH)
                 time.sleep(0.3)
 
-                flash_firmware(port=dev, firmware_path=firmware)
+                flash_firmware(port=dev, firmware_path=firmware, exit_=exit_)
             else:
                 logger.info("dongle mode: run")
 
