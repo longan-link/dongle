@@ -1,6 +1,5 @@
 import os
 import struct
-import sys
 import time
 import traceback
 
@@ -50,12 +49,13 @@ def get_dev():
     return dev
 
 
-def boot(firmware=None, exit_=False):
+def boot(firmware=None, exit_=False) -> bool:
     """
     dongle startup.
     bslpin - 1. LOW: download mode; 2. HIGH: run mode;
     rstpin - LOW -> HIGH: read bslpin status
     """
+    result = True
     dev = get_dev()
     logger.info(f"dongle dev: {dev}")
     if "ttyUSB0" not in dev:
@@ -74,7 +74,7 @@ def boot(firmware=None, exit_=False):
                 GPIO.output(rstpin, GPIO.HIGH)
                 time.sleep(0.3)
 
-                flash_firmware(port=dev, firmware_path=firmware, exit_=exit_)
+                result = flash_firmware(port=dev, firmware_path=firmware, exit_=exit_)
             else:
                 logger.info("dongle mode: run")
 
@@ -84,11 +84,14 @@ def boot(firmware=None, exit_=False):
             GPIO.output(rstpin, GPIO.HIGH)
             time.sleep(0.3)  # sleep for about 300ms
 
-        except KeyboardInterrupt:
-            pass
+        except Exception as e:
+            logger.error(e)
+            result = False
+
+    return result
 
 
-def flash_firmware(port: str, firmware_path: str, exit_ = True):
+def flash_firmware(port: str, firmware_path: str, exit_ = True) -> bool:
     """flash firmware
 
     Arguments:
@@ -272,22 +275,11 @@ def flash_firmware(port: str, firmware_path: str, exit_ = True):
 
         cmd.cmdReset()
 
+        return True
     except Exception as err:
+        logger.error(err)
         if QUIET >= 10:
             traceback.print_exc()
-        if exit_:
+        if exit_ or isinstance(err, KeyboardInterrupt):
             exit("ERROR: %s" % str(err))
-
-
-if __name__ == "__main__":
-    print(get_dev())
-    flash_firmware(
-        port="/dev/tty.usbserial-0001",
-        firmware_path="./hexs/CC1352P2_CC2652P_launchpad_coordinator_20210120.hex",
-    )
-    # if len(sys.argv) == 1:
-    #     boot()
-    # elif sys.argv[1] == "bf":
-    #     boot(flash=True)
-    # elif sys.argv[1] == "f":
-    #     flash_firmware()
+        return False
