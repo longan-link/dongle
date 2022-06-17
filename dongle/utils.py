@@ -24,6 +24,8 @@ try:
 
     if GPIO.RPI_INFO["TYPE"] != "Jetson Nano":
         logger.info("rpi")
+
+        import RPi.GPIO as GPIO
         mode = GPIO.BCM
         rstpin, bslpin = 4, 22
     else:

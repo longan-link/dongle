@@ -9,8 +9,13 @@ def run():
 
 
 @click.command()
-def boot():
-    utils.boot()
+@click.option(
+    "--firmware",
+    "-f",
+    help="firmware path ready be flash.)",
+)
+def boot(firmware: str):
+    utils.boot(firmware)
 
 
 @click.command()
