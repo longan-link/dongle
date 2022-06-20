@@ -5,7 +5,7 @@ description = ""
 authors = ["xavierchan <xavierchan@163.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.7"
 fake-rpigpio = "0.1.1"
 intelhex = "2.3.0"
 "Jetson.GPIO" = "2.0.18"
