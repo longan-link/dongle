@@ -20,16 +20,17 @@ from dongle.cc2538_bsl import (
 
 mode = rstpin = bslpin = None
 try:
-    import Jetson.GPIO as GPIO
+    import RPi.GPIO as GPIO
 
     if GPIO.RPI_INFO["TYPE"] != "Jetson Nano":
         logger.info("rpi")
 
-        import RPi.GPIO as GPIO
         mode = GPIO.BCM
         rstpin, bslpin = 4, 22
     else:
         logger.info("nano")
+
+        import Jetson.GPIO as GPIO
         mode = GPIO.BOARD
         rstpin, bslpin = 7, 15
 except (ImportError, RuntimeError, ModuleNotFoundError) as e:
